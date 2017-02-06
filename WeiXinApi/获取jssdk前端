@@ -1,0 +1,57 @@
+ <script type="text/javascript">
+        $(document).ready(function () {
+            alert(location.href.split('#')[0]);
+            $.ajax({
+                type: 'GET',
+                url: 'http://wx.lvwei8.com/API/WeixinApi.aspx' + '?url=' + location.href.split('#')[0],
+                withCredentials: false,
+                error: function () {
+                    console.log('出错');
+                    alert('请求出错');
+                },
+                success: function (data) {
+                    data = eval('(' + data + ')');
+                    alert(data.signature);
+                    startConfig(data);
+                }
+            });
+            //开始配置微信js-sdk
+            var startConfig = function (data) {
+                wx.config({
+                    debug: true,
+                    appId: 'wx1bbadc0beedbcc39',
+                    timestamp: data.timestamp,
+                    nonceStr: data.nonce,
+                    signature: data.signature,
+                    jsApiList: [
+                        // 所有要调用的 API 都要加到这个列表中
+                        'checkJsApi',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'onMenuShareQQ',
+                        'onMenuShareWeibo',
+                        'onMenuShareQZone',
+                        'hideMenuItems',
+                        'showMenuItems',
+                        'hideAllNonBaseMenuItem',
+                        'showAllNonBaseMenuItem'
+                    ]
+                });
+            };
+
+            wx.ready(function () {
+                // 在这里调用 API
+                wx.onMenuShareTimeline({
+                    title: '测试标题', // 分享标题
+                    link: 'http://lvwei8.com/demo/test', // 分享链接
+                    imgUrl: 'http://lwb.0351ets.com/media/ProductConTPIC/201609/636091184579665428.jpg', // 分享图标
+                    success: function () {
+                        alert("分享成功");
+                    },
+                    cancel: function () {
+                        // 用户取消分享后执行的回调函数
+                        alert("分享失败");
+                    }
+                });
+            });
+        })
