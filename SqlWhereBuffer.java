@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Created by bubei on 16/7/14.
+ * Created by chao li on 16/12/14.
  */
 
 public class SqlWhereBuffer {
